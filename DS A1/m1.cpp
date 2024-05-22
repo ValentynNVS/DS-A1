@@ -16,11 +16,13 @@ const int kNumberOfFlights = 10;
 
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date);
 void printFlightInfo(struct FlightInfo* flights);
+struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
 
 struct FlightInfo {
 
 	char* destination;
 	char* date;
+	float fare;
 
 };
 
@@ -43,6 +45,8 @@ int main(void) {
 		fgets(dateOfTheFlight, kMaxStrSize, stdin);
 		dateOfTheFlight[strcspn(dateOfTheFlight, "\n")] = '\0';
 
+		printf("Enter the fare for flight %d: ", i + 1);
+		fgets()
 		fillFlightInfo(&flight[i], destination, dateOfTheFlight);
 	}
 
@@ -98,4 +102,10 @@ void printFlightInfo(struct FlightInfo* flights) {
 	for (int i = 0; i < 10; ++i) {
 		printf("%-35s%-35s\n", flights[i].destination, flights[i].date);
 	}
+}
+
+struct Node* findFlight(struct FlightNode* head, char* destination, char* date) {
+
+
+
 }
