@@ -1,10 +1,10 @@
 /*
-* FILE : f1.cpp
-* PROJECT : Focused 1 assignment
+* FILE : m1.cpp
+* PROJECT : Assignment 1
 * PROGRAMMER : Valentyn Novosydliuk
-* FIRST VERSION : 05/10/2024
+* FIRST VERSION : 05/22/2024
 * DESCRIPTION :
-* This program gets user flight infomation and aims to work with active memory allocation using malloc();
+* This program works with a double sorted linked list and malloc dynamic memory allocation
 */
 #include <stdio.h>
 #include <stdlib.h>
