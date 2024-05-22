@@ -17,6 +17,7 @@ const int kNumberOfFlights = 10;
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date);
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
+void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
 
 struct FlightInfo {
 
@@ -105,6 +106,12 @@ void printFlightInfo(struct FlightInfo* flights) {
 }
 
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date) {
+
+
+
+}
+
+void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail) {
 
 
 
