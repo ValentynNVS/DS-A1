@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#pragma warning(disable: 4996);
+#pragma warning(disable: 4996)
 const int kMaxStrSize = 30;
 const int kNumberOfFlights = 10;
 
@@ -18,6 +18,12 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
+
+struct Node {
+
+
+
+};
 
 struct FlightInfo {
 
@@ -33,28 +39,31 @@ int main(void) {
 
 	struct FlightInfo flight[kNumberOfFlights] = { 0 };
 
-	for (int i = 0; i < kNumberOfFlights; i++) {
+	for (;;) {
 
 		char destination[kMaxStrSize] = "";
 		char dateOfTheFlight[kMaxStrSize] = "";
+		float fare = 0;
 
 		printf("Enter the name of a destination of a flight\n");
 		fgets(destination, kMaxStrSize, stdin);
 		destination[strcspn(destination, "\n")] = '\0';
+		if (strcmp(destination, ".") == 0) {
+			break;
+		}
 
-		printf("Enter date for flight %d: ", i + 1);
+		printf("Enter date for flight : \n ");
 		fgets(dateOfTheFlight, kMaxStrSize, stdin);
 		dateOfTheFlight[strcspn(dateOfTheFlight, "\n")] = '\0';
+		if (strcmp(dateOfTheFlight, ".") == 0) {
+			break;
+		}
 
-		printf("Enter the fare for flight %d: ", i + 1);
-		fgets()
-		fillFlightInfo(&flight[i], destination, dateOfTheFlight);
-	}
-
-	printFlightInfo(flight);
-	for (int i = 0; i < 10; ++i) {
-		free(flight[i].destination);
-		free(flight[i].date);
+		printf("Enter the fare for flight : \n");
+		if (scanf("%f", &fare) != 1) {
+			printf("Invalid input for fare. Please enter a valid floating-point number.\n");
+			continue;
+		}
 	}
 
 	return 0;
@@ -107,7 +116,7 @@ void printFlightInfo(struct FlightInfo* flights) {
 
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date) {
 
-
+	return NULL;
 
 }
 
