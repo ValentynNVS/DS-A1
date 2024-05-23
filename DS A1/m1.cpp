@@ -55,9 +55,7 @@ int main(void) {
 		printf("Enter date for flight : \n ");
 		fgets(dateOfTheFlight, kMaxStrSize, stdin);
 		dateOfTheFlight[strcspn(dateOfTheFlight, "\n")] = '\0';
-		if (strcmp(dateOfTheFlight, ".") == 0) {
-			break;
-		}
+
 
 		printf("Enter the fare for flight : \n");
 		if (scanf("%f", &fare) != 1) {
