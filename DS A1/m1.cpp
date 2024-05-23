@@ -128,6 +128,7 @@ struct Node* findFlight(struct FlightNode* head, char* destination, char* date) 
 }
 
 
+
 /*
 Function: printfFlightInfo
 Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo
