@@ -128,7 +128,12 @@ struct Node* findFlight(struct FlightNode* head, char* destination, char* date) 
 }
 
 
-
+/*
+Function: printfFlightInfo
+Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo
+Description: This functions prints the formatted output after the fillFlightInfo
+Return value: void
+*/
 void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail) {
 
 
