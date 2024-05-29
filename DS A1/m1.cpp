@@ -21,7 +21,9 @@ void deleteNode(struct FLightNode* node, struct FlightNode** head, struct Flight
 
 struct Node {
 
-
+	struct FlightInfo flight;
+	struct FlightNode* prevElement;
+	struct FlightNide* nextElement;
 
 };
 
