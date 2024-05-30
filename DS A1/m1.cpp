@@ -18,6 +18,9 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
+struct Node* InsertNewNode(struct Student* head, struct Student* tail, char* destination, char* date, float* age);
+struct Node* CreateNewNode(char* destination, char* date, float* fare);
+
 
 struct FlightInfo {
 
@@ -45,7 +48,7 @@ int main(void) {
 	struct Node* tailForFareSorted = NULL;
 
 
-	struct FlightInfo flightlights = { 0 };
+	struct FlightInfo flights = { 0 };
 
 	for (;;) {
 
@@ -60,7 +63,7 @@ int main(void) {
 			break;
 		}
 
-		printf("Enter date for flight : \n ");
+		printf("Enter date for flight : \n");
 		fgets(dateOfTheFlight, kMaxStrSize, stdin);
 		dateOfTheFlight[strcspn(dateOfTheFlight, "\n")] = '\0';
 		if (strcmp(dateOfTheFlight, ".") == 0) {
@@ -70,9 +73,23 @@ int main(void) {
 		printf("Enter the fare for flight : \n");
 		if (scanf("%f", &fare) != 1) {
 			printf("Invalid input for fare. Please enter a valid floating-point number.\n");
+			
+			float bufferClearer;
+			while ((bufferClearer = getchar()) != '\n' && bufferClearer != EOF);
 			continue;
 		}
 
+		float bufferClearer;
+		while ((bufferClearer = getchar()) != '\n' && bufferClearer != EOF);
+
+		fillFlightInfo(&flights, destination, dateOfTheFlight, &fare);
+		InsertNewNode(headForFareSorted, )
+		/*so now i need to create a sorting fucntion or comparing fucntion for
+		destination as well as fare
+		
+		so the inserntode will check if there is a node first, then if yes
+		it will go over the other nodes and check if the fare > previousNode && fare <= NextNode
+		or smth like that*/
 
 	}
 
@@ -80,6 +97,17 @@ int main(void) {
 }
 
 
+struct Node* CreateNewNode(char* destination, char* date, float* fare) {
+
+
+
+}
+
+struct Node* InsertNewNode(struct Student* head, struct Student* tail, char* destination, char* date, float* age) {
+
+	
+
+}
 /*
 Function: fillFlightInfo
 Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo (which is a
@@ -113,7 +141,6 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 	}
 	else {
 		flight->fare = fare;
-
 	}
 }
 
