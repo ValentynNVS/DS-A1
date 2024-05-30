@@ -1,4 +1,4 @@
-/*
+﻿/*
 * FILE : m1.cpp
 * PROJECT : Assignment 1
 * PROGRAMMER : Valentyn Novosydliuk
@@ -17,15 +17,7 @@ const int kNumberOfFlights = 10;
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date);
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
-void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
-
-struct Node {
-
-	struct FlightInfo flight;
-	struct FlightNode* prevElement;
-	struct FlightNide* nextElement;
-
-};
+void deleteNode(struct FLightNode** node, struct FlightNode** head, struct FlightNode** tail);
 
 struct FlightInfo {
 
@@ -35,11 +27,25 @@ struct FlightInfo {
 
 };
 
+struct Node {
+
+	struct FlightInfo flight;
+	struct FlightNode* prevElement;
+	struct FlightNide* nextElement;
+
+};
+
+
+
 int main(void) {
 
+	struct Node* headForDestinationSorted = NULL;
+	struct Node* tailForDestinationSorted = NULL;
+	struct Node* headForFareSorted = NULL;
+	struct Node* tailForFareSorted = NULL;
 
 
-	struct FlightInfo flight[kNumberOfFlights] = { 0 };
+	struct FlightInfo flightlights = { 0 };
 
 	for (;;) {
 
@@ -137,8 +143,28 @@ Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo
 Description: This functions prints the formatted output after the fillFlightInfo
 Return value: void
 */
-void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail) {
+void deleteNode(struct FLightNode** node, struct FlightNode** head, struct FlightNode** tail) {
 
 
 
 }
+
+/*i should have 2 sourted double linkes lists
+1 for flight destination
+1 for flight fare
+
+after the user enter DOT - .
+i need to get his destination and on other line date
+if there is a match, then display the fare and prompt for a new fare
+If the fare is changed, update the destination-sorted linked list with the
+new fare. Then delete the flight from the fare-sorted linked list and
+reinsert it.
+▪ If the fare is unchanged, print a message indicating that and do nothing.
+▪ Again, the fare will always be valid.
+If there is not an exact match (on the destination and date fields), display a
+message saying so and continue with the next step
+
+After that, diplay both linked lists as before
+
+At the end, I must free up all allocated memory
+*/
