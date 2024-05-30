@@ -17,7 +17,7 @@ const int kNumberOfFlights = 10;
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date);
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
-void deleteNode(struct FLightNode** node, struct FlightNode** head, struct FlightNode** tail);
+void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
 
 struct FlightInfo {
 
@@ -143,7 +143,7 @@ Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo
 Description: This functions prints the formatted output after the fillFlightInfo
 Return value: void
 */
-void deleteNode(struct FLightNode** node, struct FlightNode** head, struct FlightNode** tail) {
+void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail) {
 
 
 
