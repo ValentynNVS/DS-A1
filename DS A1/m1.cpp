@@ -14,7 +14,7 @@
 const int kMaxStrSize = 30;
 const int kNumberOfFlights = 10;
 
-void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date);
+void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float* fare);
 void printFlightInfo(struct FlightInfo* flights);
 struct Node* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail);
@@ -23,7 +23,7 @@ struct FlightInfo {
 
 	char* destination;
 	char* date;
-	float fare;
+	float* fare;
 
 };
 
@@ -72,6 +72,8 @@ int main(void) {
 			printf("Invalid input for fare. Please enter a valid floating-point number.\n");
 			continue;
 		}
+
+
 	}
 
 	return 0;
@@ -87,7 +89,7 @@ Parameters: struct FlightInfo* flight - a pointer to a struct FlightInfo (which 
 Description: Thhis fucntion fills in the struct field and allocates memory blocks
 Return value: void
 */
-void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date) {
+void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float* fare) {
 
 	flight->destination = (char*)malloc(strlen(destination) + 1);
 	if (flight->destination == NULL) {
@@ -103,6 +105,15 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 	}
 	else {
 		strcpy(flight->date, date);
+	}
+
+	flight->fare = (float*)malloc(sizeof + 1);
+	if (flight->fare == NULL) {
+		printf("Memory allcoation failed for fare\n");
+	}
+	else {
+		flight->fare = fare;
+
 	}
 }
 
@@ -145,7 +156,11 @@ Return value: void
 */
 void deleteNode(struct FLightNode* node, struct FlightNode** head, struct FlightNode** tail) {
 
+	if (node == NULL) {
 
+		return ;
+
+	}
 
 }
 
