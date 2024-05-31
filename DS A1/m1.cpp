@@ -4,12 +4,11 @@
 
 #pragma warning(disable: 4996)
 const int kMaxStrSize = 30;
-const int kNumberOfFlights = 10;
 
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
 void printFlightInfo(struct FlightNode* flights);
 struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date);
-void deleteNode(struct FlightNode* node, struct FlightNode** head, struct FlightNode** tail);
+void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail);
 void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare);
@@ -70,19 +69,66 @@ int main(void) {
     }
 
     struct FlightNode* current = headForFareSorted;
+    printf("Fares-sorted linked list:\n");
     while (current != NULL) {
-        printf("Fare SORTED LIST : Destination: %s, Date: %s, Fare: %.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+        printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+        current = current->nextElement;
+    }
+    current = headForDestinationSorted;
+    printf("\nDestination-sorted linked list:\n");
+    while (current != NULL) {
+        printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
         current = current->nextElement;
     }
 
-    printf("PRINTING DESTINATION SORTED LIST: \n");
-    current = headForDestinationSorted;
-    while (current != NULL) {
-        printf("Fare SORTED LIST : Destination: %s, Date: %s, Fare: %.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
-        current = current->nextElement;
+    char destination[kMaxStrSize] = "";
+    char dateOfTheFlight[kMaxStrSize] = "";
+    /*obtaining 1 last destination and date*/
+    printf("Enter the name of a last destination of a flight\n");
+    fgets(destination, kMaxStrSize, stdin);
+    destination[strcspn(destination, "\n")] = '\0';
+    printf("Enter date for flight : \n");
+    fgets(dateOfTheFlight, kMaxStrSize, stdin);
+    dateOfTheFlight[strcspn(dateOfTheFlight, "\n")] = '\0';
+
+    struct FlightNode* sameFlight = findFlight(headForDestinationSorted, destination, dateOfTheFlight);
+    if (sameFlight != NULL) {
+        float fare = 0;
+        printf("This is the fare for this information: %.2f\n", sameFlight->flight.fare);
+        printf("Please, enter a new fare: ");
+        if (scanf("%f", &fare) != 1) {
+            printf("Invalid input for fare. Please enter a valid floating-point number.\n");
+            int bufferClearer;
+            while ((bufferClearer = getchar()) != '\n' && bufferClearer != EOF);
+
+            if (fare == sameFlight->flight.fare) {
+                printf("The fare is the same\n");
+            }
+            else {
+                /*insert a new node and dekete an old one*/
+            }
+
+        }
+        else if (sameFlight == NULL) {
+            printf("No matching flights found");
+        }
+
+        current = headForFareSorted;
+        printf("Fares-sorted linked list:\n");
+        while (current != NULL) {
+            printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+            current = current->nextElement;
+        }
+        current = headForDestinationSorted;
+        printf("\nDestination-sorted linked list:\n");
+        while (current != NULL) {
+            printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+            current = current->nextElement;
+        }
+        return 0;
     }
-    return 0;
 }
+
 
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare) {
     struct FlightNode* newFlight = (struct FlightNode*)malloc(sizeof(struct FlightNode));
@@ -111,6 +157,7 @@ struct FlightNode* CreateNewNode(char* destination, char* date, float fare) {
 
     return newFlight;
 }
+
 void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
     struct FlightNode* newFlight = CreateNewNode(destination, date, fare);
 
@@ -122,7 +169,7 @@ void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char*
 
     int result = strcmp((*head)->flight.destination, destination);
     // Case 2: If the new node's fare is less than the head's fare, insert at the beginning
-    if (result > 0) {
+    if (result >= 0) {
         newFlight->nextElement = *head;
         (*head)->prevElement = newFlight;
         *head = newFlight;
@@ -131,7 +178,7 @@ void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char*
 
     struct FlightNode* current = *head;
 
-    while (current->nextElement != NULL && (strcmp(current->nextElement->flight.destination , destination)) < 0 ) {
+    while (current->nextElement != NULL && (strcmp(current->nextElement->flight.destination , destination)) <= 0 ) {
         current = current->nextElement;
     }
 
@@ -160,7 +207,7 @@ void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char*
     }
 
     // Case 2: If the new node's fare is less than the head's fare, insert at the beginning
-    if ((*head)->flight.fare > fare) {
+    if ((*head)->flight.fare >= fare) {
         newFlight->nextElement = *head;
         (*head)->prevElement = newFlight;
         *head = newFlight;
@@ -169,7 +216,7 @@ void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char*
 
     struct FlightNode* current = *head;
 
-    while (current->nextElement != NULL && current->nextElement->flight.fare < fare) {
+    while (current->nextElement != NULL && current->nextElement->flight.fare <= fare) {
         current = current->nextElement;
     }
 
@@ -216,11 +263,19 @@ void printFlightInfo(struct FlightNode* flights) {
 
 struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date) {
 
+    struct FlightNode* current = head;
 
+    while (current != NULL) {
+
+        if (strcmp(destination, head->flight.destination) == 0 && (strcmp(date, head->flight.date) == 0)) {
+            return current;
+        }
+    }
+    
     return NULL;
 }
 
-void deleteNode(struct FlightNode* node, struct FlightNode** head, struct FlightNode** tail) {
+void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail) {
 
 
 }
