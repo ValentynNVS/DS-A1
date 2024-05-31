@@ -66,15 +66,21 @@ int main(void) {
 
         fillFlightInfo(&flights, destination, dateOfTheFlight, fare);
         InsertNewNodeFare(&headForFareSorted, &tailForFareSorted, destination, dateOfTheFlight, fare);
-        InsertNewNodeDest();
+        InsertNewNodeDest(&headForDestinationSorted, &tailForDestinationSorted, destination, dateOfTheFlight, fare);
     }
 
     struct FlightNode* current = headForFareSorted;
     while (current != NULL) {
-        printf("Destination: %s, Date: %s, Fare: %.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+        printf("Fare SORTED LIST : Destination: %s, Date: %s, Fare: %.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
         current = current->nextElement;
     }
 
+    printf("PRINTING DESTINATION SORTED LIST: \n");
+    current = headForDestinationSorted;
+    while (current != NULL) {
+        printf("Fare SORTED LIST : Destination: %s, Date: %s, Fare: %.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+        current = current->nextElement;
+    }
     return 0;
 }
 
@@ -114,9 +120,9 @@ void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char*
         return;
     }
 
-    int result = strcmp((*head)->flight.destination, destination));
+    int result = strcmp((*head)->flight.destination, destination);
     // Case 2: If the new node's fare is less than the head's fare, insert at the beginning
-    if (result == 0) {
+    if (result > 0) {
         newFlight->nextElement = *head;
         (*head)->prevElement = newFlight;
         *head = newFlight;
@@ -125,7 +131,7 @@ void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char*
 
     struct FlightNode* current = *head;
 
-    while (current->nextElement != NULL && current->nextElement->flight.fare < fare) {
+    while (current->nextElement != NULL && (strcmp(current->nextElement->flight.destination , destination)) < 0 ) {
         current = current->nextElement;
     }
 
