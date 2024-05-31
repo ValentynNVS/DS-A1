@@ -264,6 +264,7 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 
 
 
+
 void printFlightInfo(struct FlightNode* flights) {
 
 
