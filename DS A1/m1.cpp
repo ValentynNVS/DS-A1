@@ -7,10 +7,11 @@ const int kMaxStrSize = 30;
 const int kNumberOfFlights = 10;
 
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
-void printFlightInfo(struct FlightInfo* flights);
+void printFlightInfo(struct FlightNode* flights);
 struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FlightNode* node, struct FlightNode** head, struct FlightNode** tail);
-void InsertNewNode(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
+void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
+void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare);
 
 struct FlightInfo {
@@ -64,7 +65,8 @@ int main(void) {
         while ((bufferClearer = getchar()) != '\n' && bufferClearer != EOF);
 
         fillFlightInfo(&flights, destination, dateOfTheFlight, fare);
-        InsertNewNode(&headForFareSorted, &tailForFareSorted, destination, dateOfTheFlight, fare);
+        InsertNewNodeFare(&headForFareSorted, &tailForFareSorted, destination, dateOfTheFlight, fare);
+        InsertNewNodeDest();
     }
 
     struct FlightNode* current = headForFareSorted;
@@ -103,8 +105,46 @@ struct FlightNode* CreateNewNode(char* destination, char* date, float fare) {
 
     return newFlight;
 }
+void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
+    struct FlightNode* newFlight = CreateNewNode(destination, date, fare);
 
-void InsertNewNode(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
+    if (*head == NULL) {
+        *head = newFlight;
+        *tail = newFlight;
+        return;
+    }
+
+    int result = strcmp((*head)->flight.destination, destination));
+    // Case 2: If the new node's fare is less than the head's fare, insert at the beginning
+    if (result == 0) {
+        newFlight->nextElement = *head;
+        (*head)->prevElement = newFlight;
+        *head = newFlight;
+        return;
+    }
+
+    struct FlightNode* current = *head;
+
+    while (current->nextElement != NULL && current->nextElement->flight.fare < fare) {
+        current = current->nextElement;
+    }
+
+    // Insert the new node
+    newFlight->nextElement = current->nextElement;
+    newFlight->prevElement = current;
+
+    if (current->nextElement != NULL) {
+        current->nextElement->prevElement = newFlight;
+    }
+    else {
+        // Update the tail if we are inserting at the end
+        *tail = newFlight;
+    }
+
+    current->nextElement = newFlight;
+}
+
+void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
     struct FlightNode* newFlight = CreateNewNode(destination, date, fare);
 
     if (*head == NULL) {
@@ -160,4 +200,21 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
     }
 
     flight->fare = fare;
+}
+
+
+void printFlightInfo(struct FlightNode* flights) {
+
+
+}
+
+struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date) {
+
+
+    return NULL;
+}
+
+void deleteNode(struct FlightNode* node, struct FlightNode** head, struct FlightNode** tail) {
+
+
 }
