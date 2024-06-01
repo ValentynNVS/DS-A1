@@ -5,13 +5,14 @@
 #pragma warning(disable: 4996)
 const int kMaxStrSize = 30;
 
-void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
-void printFlightInfo(struct FlightNode* head);
-struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail);
 void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
+void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
+void printFlightInfo(struct FlightNode* head);
+struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date);
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare);
+int freeAllocatedMemory(struct FlightNode* head);
 
 struct FlightInfo {
     char* destination;
@@ -97,7 +98,6 @@ int main(void) {
             }
             else {
                 sameFlight->flight.fare = fare;
-                printf("%f\n", sameFlight->flight.fare);
                 struct FlightNode* flightFareList = findFlight(headForFareSorted, destination, dateOfTheFlight);
                 /*everything seems to work up until this part*/
                 deleteNode(flightFareList, headForFareSorted, tailForFareSorted);
@@ -117,6 +117,9 @@ int main(void) {
     else if (sameFlight == NULL) {
         printf("No matching flights found");
     }
+
+    freeAllocatedMemory(headForDestinationSorted);
+    freeAllocatedMemory(headForFareSorted);
     return 0;
 }
 
@@ -299,7 +302,20 @@ void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightN
         }
 
         // Free the memory allocated for the node
-        free(node->flight.destination);
-        free(node->flight.date);
-        free(node);
+        freeAllocatedMemory(node);
+}
+
+int freeAllocatedMemory(struct FlightNode* head) {
+
+    struct FlightNode* current = head;
+    struct FlightNode* nextNode;
+
+    while (current != NULL) {
+        nextNode = current->nextElement;
+        free(current->flight.destination);
+        free(current->flight.date);
+        free(current);
+        current = nextNode;
+    }
+
 }
