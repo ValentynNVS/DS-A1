@@ -22,12 +22,14 @@ struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* 
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare);
 int freeAllocatedMemory(struct FlightNode* head);
 
+/*struct for storing flight information*/
 struct FlightInfo {
     char* destination;
     char* date;
     float fare;
 };
 
+/*Node for double linked list*/
 struct FlightNode {
     struct FlightInfo flight;
     struct FlightNode* prevElement;
@@ -35,8 +37,10 @@ struct FlightNode {
 };
 
 int main(void) {
+    /*head and tail for the detination sourted linked list*/
     struct FlightNode* headForDestinationSorted = NULL;
     struct FlightNode* tailForDestinationSorted = NULL;
+    /*head and tail for the fare sorted linked list*/
     struct FlightNode* headForFareSorted = NULL;
     struct FlightNode* tailForFareSorted = NULL;
 
