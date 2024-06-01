@@ -1,4 +1,12 @@
-﻿#include <stdio.h>
+﻿/*
+* FILE : m1.cpp
+* PROJECT :  Assignment 1
+* PROGRAMMER : Valentyn Novosydliuk
+* FIRST VERSION : 05/29/2024
+* DESCRIPTION :
+* This program gets user flight infomation. There is a huge use of double linked lists as well as malloc dynamic memory allocation.
+*/
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
