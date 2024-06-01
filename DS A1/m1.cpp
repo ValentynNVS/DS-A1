@@ -357,6 +357,7 @@ struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* 
     return NULL;
 }
 
+
 /*
 Function: deleteNode
 Parameters: struct FlightNode* node - pointer to the flight node to be deleted
