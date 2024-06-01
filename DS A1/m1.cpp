@@ -126,8 +126,15 @@ int main(void) {
         printf("No matching flights found");
     }
 
-    freeAllocatedMemory(headForDestinationSorted);
-    freeAllocatedMemory(headForFareSorted);
+    int errorChekingForMemoryCleanUp = 0;
+    errorChekingForMemoryCleanUp = freeAllocatedMemory(headForDestinationSorted);
+    if (errorChekingForMemoryCleanUp == 0) {
+        printf("Memory could not be freed\n");
+    }
+    errorChekingForMemoryCleanUp = freeAllocatedMemory(headForFareSorted);
+    if (errorChekingForMemoryCleanUp == 0) {
+        printf("Memory could not be freed\n");
+    }
     return 0;
 }
 
@@ -247,6 +254,14 @@ void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char*
     struct FlightNode* current = *head;
 
     while (current->nextElement != NULL && current->nextElement->flight.fare <= fare) {
+        if (current->nextElement->flight.fare == fare) {
+            // Insert before the current node with the same fare
+            newFlight->nextElement = current->nextElement;
+            newFlight->prevElement = current;
+            current->nextElement->prevElement = newFlight;
+            current->nextElement = newFlight;
+            return;
+        }
         current = current->nextElement;
     }
 
@@ -355,27 +370,29 @@ void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightN
         if (node == NULL) {
             return;
         }
-
-        // Relink the previous node to the next node, if it exists
+        /*relink the previous node to the next node, if it exists*/
         if (node->prevElement != NULL) {
             node->prevElement->nextElement = node->nextElement;
         }
         else {
-            // If the node is the head, update the head pointer
+            /*if the node is the head, update the head pointer*/
             head = node->nextElement;
         }
-
-        // Relink the next node to the previous node, if it exists
+        /*relink the next node to the previous node, if it exists*/
         if (node->nextElement != NULL) {
             node->nextElement->prevElement = node->prevElement;
         }
         else {
-            // If the node is the tail, update the tail pointer
+            /*if the node is the tail, update the tail pointer*/
             tail = node->prevElement;
         }
 
-        // Free the memory allocated for the node
-        freeAllocatedMemory(node);
+
+        if ((freeAllocatedMemory(node)) == 0) {
+            printf("Memory could not be freed\n");
+            return;
+        }
+
 }
 
 /*
@@ -388,14 +405,20 @@ Return value: int - the number of nodes that were freed
 int freeAllocatedMemory(struct FlightNode* head) {
 
     struct FlightNode* current = head;
-    struct FlightNode* nextNode;
+    struct FlightNode* next;
 
     while (current != NULL) {
-        nextNode = current->nextElement;
+        next = current->nextElement;
         free(current->flight.destination);
         free(current->flight.date);
         free(current);
-        current = nextNode;
+        current = next;
+        return 1;
+    }
+
+    if (current == NULL) {
+
+        return 0;
     }
 
 }
