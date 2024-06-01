@@ -68,18 +68,10 @@ int main(void) {
         InsertNewNodeDest(&headForDestinationSorted, &tailForDestinationSorted, destination, dateOfTheFlight, fare);
     }
 
-    struct FlightNode* current = headForFareSorted;
     printf("Fares-sorted linked list:\n");
-    while (current != NULL) {
-        printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
-        current = current->nextElement;
-    }
-    current = headForDestinationSorted;
+    printFlightInfo(headForFareSorted);
     printf("\nDestination-sorted linked list:\n");
-    while (current != NULL) {
-        printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
-        current = current->nextElement;
-    }
+    printFlightInfo(headForDestinationSorted);
 
     char destination[kMaxStrSize] = "";
     char dateOfTheFlight[kMaxStrSize] = "";
@@ -115,18 +107,10 @@ int main(void) {
 
         }
 
-        current = headForFareSorted;
         printf("Fares-sorted linked list:\n");
-        while (current != NULL) {
-            printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
-            current = current->nextElement;
-        }
-        current = headForDestinationSorted;
+        printFlightInfo(headForFareSorted);
         printf("\nDestination-sorted linked list:\n");
-        while (current != NULL) {
-            printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
-            current = current->nextElement;
-        }
+        printFlightInfo(headForDestinationSorted);
         
     }
 
@@ -267,7 +251,11 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 
 void printFlightInfo(struct FlightNode* head) {
 
-
+    struct FlightNode* current = head;
+    while (current != NULL) {
+        printf("%-35s%-35s%-10.2f\n", current->flight.destination, current->flight.date, current->flight.fare);
+        current = current->nextElement;
+    }
 
 }
 
