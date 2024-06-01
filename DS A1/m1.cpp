@@ -123,7 +123,15 @@ int main(void) {
     return 0;
 }
 
-
+/*
+Function: CreateNewNode
+Parameters: char* destination - pointer to the destination string for the flight
+            char* date - pointer to the date string for the flight
+            float fare - the fare for the flight
+Description: This function creates a new flight node, allocates memory for the destination and date strings,
+             and initializes the flight information.
+Return value: struct FlightNode* - pointer to the newly created flight node
+*/
 struct FlightNode* CreateNewNode(char* destination, char* date, float fare) {
     struct FlightNode* newFlight = (struct FlightNode*)malloc(sizeof(struct FlightNode));
 
@@ -151,6 +159,7 @@ struct FlightNode* CreateNewNode(char* destination, char* date, float fare) {
 
     return newFlight;
 }
+
 
 void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
     struct FlightNode* newFlight = CreateNewNode(destination, date, fare);
