@@ -6,7 +6,7 @@
 const int kMaxStrSize = 30;
 
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
-void printFlightInfo(struct FlightNode* flights);
+void printFlightInfo(struct FlightNode* head);
 struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date);
 void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail);
 void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
@@ -96,8 +96,7 @@ int main(void) {
         float fare = 0;
         printf("This is the fare for this information: %.2f\n", sameFlight->flight.fare);
         printf("Please, enter a new fare: ");
-        if (scanf("%f", &fare) != 1) {
-            printf("Invalid input for fare. Please enter a valid floating-point number.\n");
+        if (scanf("%f", &fare) == 1) {
             int bufferClearer;
             while ((bufferClearer = getchar()) != '\n' && bufferClearer != EOF);
 
@@ -106,10 +105,11 @@ int main(void) {
             }
             else {
                 sameFlight->flight.fare = fare;
-                printf("%f", sameFlight->flight.fare);
+                printf("%f\n", sameFlight->flight.fare);
                 struct FlightNode* flightFareList = findFlight(headForFareSorted, destination, dateOfTheFlight);
-                deleteNode(flightFareList, flightFareList->nextElement, flightFareList->prevElement);
-
+                /*everything seems to work up until this part*/
+                deleteNode(flightFareList, headForFareSorted, tailForFareSorted);
+                InsertNewNodeFare(&headForFareSorted, &tailForFareSorted, destination, dateOfTheFlight, fare);
                 /*update detanation list and then delete node from fare list and reinsert it*/
             }
 
@@ -265,7 +265,8 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 
 
 
-void printFlightInfo(struct FlightNode* flights) {
+void printFlightInfo(struct FlightNode* head) {
+
 
 
 }
@@ -276,7 +277,7 @@ struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* 
 
     while (current != NULL) {
 
-        if (strcmp(destination, head->flight.destination) == 0 && (strcmp(date, head->flight.date) == 0)) {
+        if (strcmp(destination, current->flight.destination) == 0 && (strcmp(date, current->flight.date) == 0)) {
             return current;
         }
         current = current->nextElement;
@@ -287,32 +288,30 @@ struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* 
 
 void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail) {
 
-    if (node == NULL) {
-        return;
-    }
+        if (node == NULL) {
+            return;
+        }
 
-    // If the node to be deleted is the head
-    if (head == node) {
-        head = node->nextElement;
-    }
+        // Relink the previous node to the next node, if it exists
+        if (node->prevElement != NULL) {
+            node->prevElement->nextElement = node->nextElement;
+        }
+        else {
+            // If the node is the head, update the head pointer
+            head = node->nextElement;
+        }
 
-    // If the node to be deleted is the tail
-    if (tail == node) {
-        tail = node->prevElement;
-    }
+        // Relink the next node to the previous node, if it exists
+        if (node->nextElement != NULL) {
+            node->nextElement->prevElement = node->prevElement;
+        }
+        else {
+            // If the node is the tail, update the tail pointer
+            tail = node->prevElement;
+        }
 
-    // Adjust pointers of adjacent nodes
-    if (node->prevElement != NULL) {
-        node->prevElement->nextElement = node->nextElement;
-    }
-    if (node->nextElement != NULL) {
-        node->nextElement->prevElement = node->prevElement;
-    }
-
-    // Free memory allocated for destination and date
-    free(node->flight.destination);
-    free(node->flight.date);
-
-    // Free the node itself
-    free(node);
+        // Free the memory allocated for the node
+        free(node->flight.destination);
+        free(node->flight.date);
+        free(node);
 }
