@@ -257,6 +257,16 @@ void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char*
     current->nextElement = newFlight;
 }
 
+/*
+Function: findFlightInfo
+Parameters: struct FlightNode* head - pointer to the head of the list
+            char* destination - pointer to the destination string to search for
+            char* date - pointer to the date string to search for
+            float fare - fare of a flight
+Description: This function searches for a flight node in the list that matches the given destination and date.
+Return value: struct FlightNode* - pointer to the found flight node, or NULL if not found
+*/
+
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare) {
     flight->destination = (char*)malloc(strlen(destination) + 1);
     if (flight->destination == NULL) {
@@ -279,7 +289,15 @@ void fillFlightInfo(struct FlightInfo* flight, const char* destination, const ch
 
 
 
-
+/*
+Function: printFlightInfo
+Parameters:
+    struct FlightNode* head - a pointer to the head of the linked list containing flight nodes
+Description:
+This function prints information about each flight in the linked list, including destination, date, and fare.
+Return value:
+    void
+*/
 void printFlightInfo(struct FlightNode* head) {
 
     struct FlightNode* current = head;
@@ -290,6 +308,17 @@ void printFlightInfo(struct FlightNode* head) {
 
 }
 
+/*
+Function: findFlight
+Parameters:
+    struct FlightNode* head - a pointer to the head of the linked list containing flight nodes
+    char* destination - pointer to a string representing the destination of the flight to find
+    char* date - pointer to a string representing the date of the flight to find
+Description:
+This function searches for a flight node within a linked list based on the provided destination and date.
+Return value:
+    struct FlightNode* - a pointer to the found flight node if it exists, otherwise returns NULL
+*/
 struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* date) {
 
     struct FlightNode* current = head;
@@ -305,6 +334,14 @@ struct FlightNode* findFlight(struct FlightNode* head, char* destination, char* 
     return NULL;
 }
 
+/*
+Function: deleteNode
+Parameters: struct FlightNode* node - pointer to the flight node to be deleted
+            struct FlightNode* head -  pointer to the head of the list
+            struct FlightNode* tail -  pointer to the tail of the list
+Description: This function deletes a node from the doubly linked list and updates the head and tail pointers if necessary.
+Return value: void
+*/
 void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail) {
 
         if (node == NULL) {
@@ -333,6 +370,13 @@ void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightN
         freeAllocatedMemory(node);
 }
 
+/*
+Function: freeAllocatedMemory
+Parameters: struct FlightNode* head - pointer to the head of the list
+Description: This function frees all nodes in the linked list, including the memory allocated for the destination and date strings.
+             It traverses the list and frees each node's allocated memory.
+Return value: int - the number of nodes that were freed
+*/
 int freeAllocatedMemory(struct FlightNode* head) {
 
     struct FlightNode* current = head;
