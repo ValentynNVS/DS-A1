@@ -209,6 +209,16 @@ void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char*
     current->nextElement = newFlight;
 }
 
+/*
+Function: InsertNewNodeFare
+Parameters: struct FlightNode** head - double pointer to the head of the fare-sorted list
+            struct FlightNode** tail - double pointer to the tail of the fare-sorted list
+            char* destination - pointer to the destination string for the flight
+            char* date - pointer to the date string for the flight
+            float fare - the fare for the flight
+Description: This function inserts a new flight node into the fare-sorted list in the correct position.
+Return value: void
+*/
 void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare) {
     struct FlightNode* newFlight = CreateNewNode(destination, date, fare);
 
