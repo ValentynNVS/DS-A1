@@ -13,7 +13,7 @@
 #pragma warning(disable: 4996)
 const int kMaxStrSize = 30;
 
-void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail);
+void deleteNode(struct FlightNode** head, struct FlightNode** tail, struct FlightNode* node);
 void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 void InsertNewNodeDest(struct FlightNode** head, struct FlightNode** tail, char* destination, char* date, float fare);
 void fillFlightInfo(struct FlightInfo* flight, const char* destination, const char* date, float fare);
@@ -108,23 +108,23 @@ int main(void) {
                 sameFlight->flight.fare = fare;
                 struct FlightNode* flightFareList = findFlight(headForFareSorted, destination, dateOfTheFlight);
                 /*everything seems to work up until this part*/
-                deleteNode(flightFareList, headForFareSorted, tailForFareSorted);
+                deleteNode(&headForFareSorted, &tailForFareSorted, flightFareList);
                 InsertNewNodeFare(&headForFareSorted, &tailForFareSorted, destination, dateOfTheFlight, fare);
                 /*update detanation list and then delete node from fare list and reinsert it*/
             }
 
         }
-
-        printf("Fares-sorted linked list:\n");
-        printFlightInfo(headForFareSorted);
-        printf("\nDestination-sorted linked list:\n");
-        printFlightInfo(headForDestinationSorted);
         
     }
 
-    else if (sameFlight == NULL) {
-        printf("No matching flights found");
+    if (sameFlight == NULL) {
+        printf("No matching flights found\n");
     }
+
+    printf("Fares-sorted linked list:\n");
+    printFlightInfo(headForFareSorted);
+    printf("\nDestination-sorted linked list:\n");
+    printFlightInfo(headForDestinationSorted);
 
     int errorChekingForMemoryCleanUp = 0;
     errorChekingForMemoryCleanUp = freeAllocatedMemory(headForDestinationSorted);
@@ -135,6 +135,7 @@ int main(void) {
     if (errorChekingForMemoryCleanUp == 0) {
         printf("Memory could not be freed\n");
     }
+
     return 0;
 }
 
@@ -243,42 +244,35 @@ void InsertNewNodeFare(struct FlightNode** head, struct FlightNode** tail, char*
         return;
     }
 
-    // Case 2: If the new node's fare is less than the head's fare, insert at the beginning
-    if ((*head)->flight.fare >= fare) {
+    struct FlightNode* current = *head;
+
+    // If the new node's fare is less than the head's fare, insert at the beginning
+    if (current->flight.fare > fare) {
         newFlight->nextElement = *head;
         (*head)->prevElement = newFlight;
         *head = newFlight;
         return;
     }
 
-    struct FlightNode* current = *head;
-
-    while (current->nextElement != NULL && current->nextElement->flight.fare <= fare) {
-        if (current->nextElement->flight.fare == fare) {
-            // Insert before the current node with the same fare
-            newFlight->nextElement = current->nextElement;
-            newFlight->prevElement = current;
-            current->nextElement->prevElement = newFlight;
-            current->nextElement = newFlight;
-            return;
-        }
+    // Traverse the list to find the correct position
+    while (current->nextElement != NULL && current->nextElement->flight.fare < fare) {
         current = current->nextElement;
     }
 
     // Insert the new node
     newFlight->nextElement = current->nextElement;
     newFlight->prevElement = current;
+    current->nextElement = newFlight;
 
-    if (current->nextElement != NULL) {
-        current->nextElement->prevElement = newFlight;
+    if (newFlight->nextElement != NULL) {
+        newFlight->nextElement->prevElement = newFlight;
     }
     else {
         // Update the tail if we are inserting at the end
         *tail = newFlight;
     }
-
-    current->nextElement = newFlight;
 }
+
 
 /*
 Function: findFlightInfo
@@ -365,35 +359,33 @@ Parameters: struct FlightNode* node - pointer to the flight node to be deleted
 Description: This function deletes a node from the doubly linked list and updates the head and tail pointers if necessary.
 Return value: void
 */
-void deleteNode(struct FlightNode* node, struct FlightNode* head, struct FlightNode* tail) {
+void deleteNode(struct FlightNode** head, struct FlightNode** tail, struct FlightNode* node) {
+    if (node == NULL) {
+        return;
+    }
 
-        if (node == NULL) {
-            return;
-        }
-        /*relink the previous node to the next node, if it exists*/
-        if (node->prevElement != NULL) {
-            node->prevElement->nextElement = node->nextElement;
-        }
-        else {
-            /*if the node is the head, update the head pointer*/
-            head = node->nextElement;
-        }
-        /*relink the next node to the previous node, if it exists*/
-        if (node->nextElement != NULL) {
-            node->nextElement->prevElement = node->prevElement;
-        }
-        else {
-            /*if the node is the tail, update the tail pointer*/
-            tail = node->prevElement;
-        }
+    // If the node is the head, update the head pointer
+    if (node == *head) {
+        *head = node->nextElement;
+    }
+    // If the node is the tail, update the tail pointer
+    if (node == *tail) {
+        *tail = node->prevElement;
+    }
+    // If the node is in the middle, update the pointers of the neighboring nodes
+    if (node->prevElement != NULL) {
+        node->prevElement->nextElement = node->nextElement;
+    }
+    if (node->nextElement != NULL) {
+        node->nextElement->prevElement = node->prevElement;
+    }
 
-
-        if ((freeAllocatedMemory(node)) == 0) {
-            printf("Memory could not be freed\n");
-            return;
-        }
-
+    // Free the node's memory
+    free(node->flight.destination);
+    free(node->flight.date);
+    free(node);
 }
+
 
 /*
 Function: freeAllocatedMemory
